@@ -1,1 +1,1 @@
-# linting
+# Linter

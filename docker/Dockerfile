@@ -1,0 +1,27 @@
+FROM ruby:3.1.3
+MAINTAINER "Christoph Fabianek" christoph@ownyourdata.eu
+
+WORKDIR /usr/src/app
+ENV RAILS_ROOT $WORKDIR
+RUN mkdir -p $RAILS_ROOT/tmp/pids && \
+	apt-get update && \
+	apt-get install -y --no-install-recommends \
+		npm \
+		curl \
+		nodejs \
+		build-essential && \
+	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+	npm cache clean -f && \
+	npm install -g n && \
+	n stable
+
+COPY Gemfile $WORKDIR
+
+RUN bundle install && \
+	bundle update && \
+	npm install -g soya-cli@latest
+COPY . .
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
+
+EXPOSE 3000

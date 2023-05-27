@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
     namespace :api, defaults: { format: :json } do
         scope "(:version)", :version => /v1/, module: :v1 do
-            match 'validate/:dri', to: 'validations#validate', via: 'post'
+            match 'validate/:soya', to: 'validations#validate', via: 'post'
         end
     end
 

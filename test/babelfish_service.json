@@ -1,0 +1,48 @@
+{
+  "interface": {
+    "info": {
+      "title": "General Linter",
+      "description": "This sevice validates a JSON document against a SOyA structure"
+    },
+    "servers": [
+      {
+        "url": "https://linter.ownyourdata.eu"
+      }
+    ],
+    "paths": {
+      "/api/validate/{SOYA}": {
+        "post": {
+          "parameters": [
+            {
+              "name": "SOYA",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "data": null,
+  "governance": {
+    "processing": [
+      "analyse",
+      "transform",
+      "use"
+    ],
+    "purpose": [
+      "validate"
+    ],
+    "retentionPeriod": "P0Y6M0DT0H0M0S"
+  }
+}

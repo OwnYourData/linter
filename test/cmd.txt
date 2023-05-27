@@ -1,0 +1,7 @@
+docker run -d -p 3050:3000 --name linter oydeu/linter:arm64v8
+
+echo '{"name":"OYD"}' | curl -H "Content-Type: application/json" -d @- -X POST http://localhost:3050/api/validate/Organisation 
+
+echo '{"name":"OYD"}' | curl -H "Content-Type: application/json" -d @- -X POST https://linter.ownyourdata.eu/api/validate/Organisation 
+
+echo '{"name":"OYD", "jurisdiction":"Vienna"}' | curl -H "Content-Type: application/json" -d @- -X POST https://linter.ownyourdata.eu/api/validate/Organisation
