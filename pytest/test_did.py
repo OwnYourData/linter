@@ -32,7 +32,7 @@ def test_access():
 cwd = os.getcwd()
 # doc: https://pypi.org/project/pytest-subprocess/
 @pytest.mark.parametrize('input',  glob.glob(cwd+'/03_input/*.doc'))
-def test_01_simple(fp, input):
+def test_did(fp, input):
     fp.allow_unregistered(True)
     with open(input) as f:
         did = f.read()
@@ -47,7 +47,7 @@ def test_01_simple(fp, input):
 # validate DID Docs
 cwd = os.getcwd()
 @pytest.mark.parametrize('input',  glob.glob(cwd+'/03_input/*.json'))
-def test_02_simple(fp, input):
+def test_did_doc(fp, input):
     print(input)
     fp.allow_unregistered(True)
     with open(input) as f:
