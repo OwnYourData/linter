@@ -1,7 +1,7 @@
 SOyA Validation Overlays
 ^^^^^^^^^^^^^^^^^^^^^^^^
-01!create soya
-02!valid record
+01 create soya
+02 valid record
 03!invalid record
 04!Web CLI
 
