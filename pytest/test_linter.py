@@ -12,22 +12,8 @@ from pathlib import Path
 # 02 - linter <- current
 # 03 - DID
 
-# requires
-# $MASTER_TOKEN
-lint_host = os.getenv('LINT_HOST') or "http://localhost:3050"
-os.environ["LINT_HOST"] = lint_host
-
-# configuration specific to tests
-# if lint_host == "http://localhost:3050":
-
-# else:
-
-def envsubst(text):
-    pattern = re.compile(r'\$({}?|[a-zA-Z_]\w*)'.format('|'.join(map(re.escape, os.environ.keys()))))
-    return pattern.sub(lambda m: os.getenv(m.group(1)), text)
-
 cwd = os.getcwd()
-@pytest.mark.parametrize('input',  sorted(glob.glob(cwd+'/02input/*.doc')))
+@pytest.mark.parametrize('input',  sorted(glob.glob(cwd+'/02_input/*.doc')))
 def test_01_organisations(fp, input):
     fp.allow_unregistered(True)
     with open(input) as f:
@@ -35,9 +21,9 @@ def test_01_organisations(fp, input):
     with open(input.replace(".doc", ".cmd")) as f:
         command = f.read()
     with open(input.replace("_input/", "_output/")) as f:
-        result = envsubst(f.read())
+        result = f.read()
     if len(content) > 0:
-        command = "cat " + input + " | envsubst | " + command
+        command = "cat " + input + " | " + command
     process = subprocess.run(command, shell=True, capture_output=True, text=True)
     assert process.returncode == 0
     if len(result) > 0:

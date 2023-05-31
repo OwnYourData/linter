@@ -1,0 +1,1 @@
+curl -s -H "Content-Type: application/json" -d @- -X POST https://linter.ownyourdata.eu/api/validate/OC3_Person

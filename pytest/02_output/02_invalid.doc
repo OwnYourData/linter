@@ -1,0 +1,1 @@
+{"valid":false,"errors":[{"value":"https://soya.ownyourdata.eu/OC3_Person/name","error":"Value does not match pattern \"^[a-zA-Z ,.'-]+$\""}]}

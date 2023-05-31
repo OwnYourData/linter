@@ -15,16 +15,11 @@ from pathlib import Path
 didlint_host = os.getenv('DIDLINT_HOST') or "https://didlint.ownyourdata.eu"
 os.environ["DIDLINT_HOST"] = didlint_host
 
-# configuration specific to tests
-# if lint_host == "http://localhost:3050":
-
-# else:
-
 def envsubst(text):
     pattern = re.compile(r'\$({}?|[a-zA-Z_]\w*)'.format('|'.join(map(re.escape, os.environ.keys()))))
     return pattern.sub(lambda m: os.getenv(m.group(1)), text)
 
-# 00 - Admin
+# admin checks
 def test_access():
     response = requests.get(didlint_host)
     assert response.status_code == 200
@@ -33,18 +28,33 @@ def test_access():
     response = requests.get(didlint_host + '/validate?did=did:oyd:zQmZZbVygmbsxWXhP2BH5nW2RMNXSQA3eRqnzfkFXzH3fg1')
     assert response.status_code == 200
 
+# validate DIDs
 cwd = os.getcwd()
-@pytest.mark.parametrize('input',  sorted(glob.glob(cwd+'/03_input/*.doc')))
-def test_01_organisations(fp, input):
+# doc: https://pypi.org/project/pytest-subprocess/
+@pytest.mark.parametrize('input',  glob.glob(cwd+'/03_input/*.doc'))
+def test_01_simple(fp, input):
     fp.allow_unregistered(True)
     with open(input) as f:
-        content = f.read()
-    with open(input.replace(".doc", ".cmd")) as f:
-        command = f.read()
+        did = f.read()
     with open(input.replace("_input/", "_output/")) as f:
-        result = envsubst(f.read())
-    if len(content) > 0:
-        command = "cat " + input + " | envsubst | " + command
+        result = f.read()
+    command = "curl " + didlint_host + "/api/validate/" + did
+    process = subprocess.run(command, shell=True, capture_output=True, text=True)
+    assert process.returncode == 0
+    if len(result) > 0:
+        assert process.stdout.strip() == result.strip()
+
+# validate DID Docs
+cwd = os.getcwd()
+@pytest.mark.parametrize('input',  glob.glob(cwd+'/03_input/*.json'))
+def test_02_simple(fp, input):
+    print(input)
+    fp.allow_unregistered(True)
+    with open(input) as f:
+        doc = f.read()
+    with open(input.replace("_input/", "_output/")) as f:
+        result = f.read()
+    command = "echo '"  + doc + "' | curl  -H 'Content-Type: application/json' -d @- -X POST " + didlint_host + "/api/validate"
     process = subprocess.run(command, shell=True, capture_output=True, text=True)
     assert process.returncode == 0
     if len(result) > 0:

@@ -1,0 +1,1 @@
+soya acquire OC3_Person | soya validate OC3_Person

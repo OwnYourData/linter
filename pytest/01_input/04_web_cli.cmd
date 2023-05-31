@@ -1,0 +1,1 @@
+curl -s -H "Content-Type: application/json" -d @- -X POST https://soya-web-cli.ownyourdata.eu/api/v1/acquire/OC3_Person | curl -s -H "Content-Type: application/json" -d @- -X POST https://soya-web-cli.ownyourdata.eu/api/v1/validate/OC3_Person
